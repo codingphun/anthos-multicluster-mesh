@@ -59,3 +59,8 @@ kubectl label namespace hipster1 istio-injection=enabled
 
 # Deploy part of hipster app on remote cluster in the namespace hipster2
 kubectl apply -n hipster1  -f ${ISTIO_CONFIG_DIR}/remote
+
+# get application frontend ip
+kubectl --context gke get -n istio-system service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+
+kubectl --context gke get svc --selector=app=istio-ingressgateway -n istio-system -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}'

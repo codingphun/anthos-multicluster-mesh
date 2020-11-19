@@ -67,7 +67,7 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
 
     # configure DNS stubdomains for cross-cluster service name resolution
     echo "🌏 Connecting the 2 Istio control planes into one mesh."
-    CONTEXT="gke1"  ./istio-coredns.sh
+    CONTEXT="gke"  ./istio-coredns.sh
     CONTEXT="onprem"  ./istio-coredns.sh
 
     # install GKE connect on both clusters / print onprem login token
