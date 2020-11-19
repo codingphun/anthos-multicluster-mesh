@@ -36,8 +36,10 @@ kubectx ${CONTEXT}
 echo "Downloading Istio ${ISTIO_VERSION}..."
 curl -L https://git.io/getLatestIstio | ISTIO_VERSION=$ISTIO_VERSION sh -
 
-echo "Moving istioctl into WORKDIR..."
-mv istio-$ISTIO_VERSION/bin/istioctl ${WORK_DIR}/bin
+echo "Moving istioctl ${ISTIO_VERSION} into WORKDIR..."
+cp istio-$ISTIO_VERSION/bin/istioctl ${WORK_DIR}/bin
+
+istioctl version
 
 # Prepare for install
 kubectl create namespace istio-system
@@ -58,7 +60,13 @@ kubectl create clusterrolebinding cluster-admin-binding \
 
 # install using operator config - https://istio.io/docs/setup/install/istioctl/#customizing-the-configuration
 INSTALL_PROFILE="istio-install-dual-ctrl.yaml"
-istioctl manifest apply -f ${INSTALL_PROFILE}
+istioctl install -f ${INSTALL_PROFILE}
+#istioctl install -f istio-${ISTIO_VERSION}/manifests/examples/multicluster/values-istio-multicluster-gateways.yaml
 
-kubectl delete svc kiali -n istio-system
-kubectl expose deployment kiali -n istio-system --type=LoadBalancer --name=kiali --port=80 --target-port=20001
+#kubectl delete svc kiali -n istio-system
+#kubectl expose deployment kiali -n istio-system --type=LoadBalancer --name=kiali --port=80 --target-port=20001
+#kubectl get svc -n istio-system kiali
+
+
+
+

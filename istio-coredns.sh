@@ -31,8 +31,6 @@ data:
 EOF
 }
 
-kubectx gke
-configure_dns
-
-kubectx onprem
+# Install Istio on ${CONTEXT}
+kubectx ${CONTEXT}
 configure_dns

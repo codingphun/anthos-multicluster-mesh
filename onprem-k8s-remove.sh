@@ -24,6 +24,12 @@ export REMOTE_CLUSTER_NAME_BASE="onprem"
 export REMOTE_CLUSTER_NAME=$REMOTE_CLUSTER_NAME_BASE.k8s.local
 export KOPS_STORE=gs://$PROJECT-kops-$REMOTE_CLUSTER_NAME_BASE
 
+if ! command -v kops &> /dev/null 
+then
+    echo "COMMAND could not be found"
+    exit
+fi
+
 kops delete cluster --name $REMOTE_CLUSTER_NAME --state $KOPS_STORE --yes
 
 kubectx -d $REMOTE_CLUSTER_NAME_BASE 

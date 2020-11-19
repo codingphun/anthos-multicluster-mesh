@@ -15,8 +15,9 @@
 # limitations under the License.
 
 # Variables
+# if using service account, make sure proper permission such as Editor, Security Admin, Kube Engine Admin roles are provisioned
 
-if [[ $OSTYPE == "linux-gnu" && $CLOUD_SHELL == true ]]; then
+if [[ $OSTYPE == "linux-gnu" ]]; then
     echo "⚡️ Starting Anthos environment install."
     export PROJECT=$(gcloud config get-value project)
     export BASE_DIR=${BASE_DIR:="${PWD}"}
@@ -43,6 +44,12 @@ if [[ $OSTYPE == "linux-gnu" && $CLOUD_SHELL == true ]]; then
     gkehub.googleapis.com \
     serviceusage.googleapis.com 
 
+    if ! command -v kops &> /dev/null 
+    then
+        echo "COMMAND could not be found"
+        exit
+    fi
+
     echo "☸️ Creating 2 Kubernetes clusters in parallel."
     echo -e "\nMultiple tasks are running asynchronously to setup your environment.  It may appear frozen, but you can check the logs in $WORK_DIR for additional details in another terminal window."
     ./gke-provision.sh &> ${WORK_DIR}/gke-provision.log &
@@ -60,7 +67,8 @@ if [[ $OSTYPE == "linux-gnu" && $CLOUD_SHELL == true ]]; then
 
     # configure DNS stubdomains for cross-cluster service name resolution
     echo "🌏 Connecting the 2 Istio control planes into one mesh."
-    ./istio-coredns.sh
+    CONTEXT="gke1"  ./istio-coredns.sh
+    CONTEXT="onprem"  ./istio-coredns.sh
 
     # install GKE connect on both clusters / print onprem login token
     #echo "⬆️ Installing GKE Connect on both clusters."

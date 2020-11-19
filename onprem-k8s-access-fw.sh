@@ -24,3 +24,4 @@ do
   echo "Updating firewall-rule $item source-range to $INSTANCE_CIDR"
   gcloud compute firewall-rules update $item --source-ranges=$INSTANCE_CIDR
 done
+#gcloud compute firewall-rules create https-api-onprem-k8s-local --source-ranges=${INSTANCE_CIDR} --target-tags="onprem-k8s-local-k8s-io-role-master" --allow tcp
