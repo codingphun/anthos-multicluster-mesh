@@ -60,6 +60,7 @@ kubectl exec --context=$CTX_CLUSTER1 $SLEEP_POD -n foo -c sleep -- curl -I httpb
 #kubectl exec --context=$CTX_CLUSTER1 $SLEEP_POD -n foo -c sleep -- curl -I httpbin:8000/headers
 #kubectl exec --context=$CTX_CLUSTER1 $SLEEP_POD -n foo -c sleep -- curl -I httpbin.foo.svc.cluster.local:8000/headers
 #kubectl exec --context=$CTX_CLUSTER1 $SLEEP_POD -n foo -c sleep -- nslookup httpbin.bar.global
+#kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}') -c ratings -- curl productpage:9080/productpage | grep -o "<title>.*</title>"
 
 #CONTEXT="gke" ./istio-install.sh ; CONTEXT="onprem" ./istio-install.sh ; CONTEXT="gke" ./istio-coredns.sh ; CONTEXT="onprem" ./istio-coredns.sh
 
